@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#111827">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PM SPx">
+
+    <title>Carga Horária PM SPx</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div>
+        <div class="brand">
+            Carga Horária <span>PM SPx</span>
+        </div>
+
+        <div class="subtitle">
+            Controle de escala e horas trabalhadas
+        </div>
+    </div>
+
+    <button id="installBtn" class="secondary hidden">
+        Instalar
+    </button>
+</header>
+
+<main class="container">
+
+    <!-- USUÁRIOS -->
+
+    <section class="card userbar">
+
+        <div class="field grow">
+
+            <label>Usuário ativo</label>
+
+            <select id="userSelect"></select>
+
+        </div>
+
+        <button id="addUserBtn" class="primary">
+            + Usuário
+        </button>
+
+        <button id="editUserBtn" class="secondary">
+            Editar
+        </button>
+
+    </section>
+
+
+    <!-- SELEÇÃO DO MÊS -->
+
+    <section class="card controls">
+
+        <div class="field">
+
+            <label>Mês</label>
+
+            <input
+                id="monthPicker"
+                type="month"
+            >
+
+        </div>
+
+        <div class="month-nav">
+
+            <button
+                id="prevMonth"
+                class="secondary"
+            >
+                ‹
+            </button>
+
+            <button
+                id="todayMonth"
+                class="secondary"
+            >
+                Hoje
+            </button>
+
+            <button
+                id="nextMonth"
+                class="secondary"
+            >
+                ›
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESUMO -->
+
+    <section class="summary-grid">
+
+        <div class="stat">
+
+            <span>Dias trabalhados</span>
+
+            <strong id="daysCount">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span>Horas normais</span>
+
+            <strong id="normalHours">
+                0h
+            </strong>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span>Horas extras</span>
+
+            <strong id="extraHours">
+                0h
+            </strong>
+
+        </div>
+
+
+        <div class="stat accent">
+
+            <span>Total de horas</span>
+
+            <strong id="totalHours">
+                0h
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <!-- CALENDÁRIO -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+                    Calendário de trabalho
+                </h2>
+
+                <p>
+                    Selecione os dias trabalhados.
+                    Cada dia contabiliza 10 horas.
+                </p>
+
+            </div>
+
+            <div class="legend">
+
+                <span class="dot work"></span>
+
+                Trabalhado
+
+            </div>
+
+        </div>
+
+        <div
+            id="calendar"
+            class="calendar"
+        ></div>
+
+    </section>
+
+
+    <!-- REGISTROS -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+                    Registros do mês
+                </h2>
+
+                <p>
+                    Registre horas extras ou folgas caçadas.
+                </p>
+
+            </div>
+
+            <button
+                id="addRecordBtn"
+                class="primary"
+            >
+                + Registro
+            </button>
+
+        </div>
+
+        <div
+            id="records"
+            class="records"
+        ></div>
+
+    </section>
+
+
+    <!-- HISTÓRICO -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+                    Resumo mensal
+                </h2>
+
+                <p>
+                    Histórico dos meses registrados.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div
+            id="history"
+            class="history"
+        ></div>
+
+    </section>
+
+
+    <section class="danger-zone">
+
+        <button
+            id="resetBtn"
+            class="danger"
+        >
+            Apagar todos os dados deste app
+        </button>
+
+    </section>
+
+</main>
+
+
+<!-- MODAL -->
+
+<div
+    id="modal"
+    class="modal hidden"
+>
+
+    <div class="modal-box">
+
+        <button
+            class="close"
+            id="closeModal"
+        >
+            ×
+        </button>
+
+        <h2 id="modalTitle">
+            Novo registro
+        </h2>
+
+
+        <div class="field">
+
+            <label>
+                Tipo
+            </label>
+
+            <select id="recordType">
+
+                <option value="extra">
+                    Hora extra vinculada a um dia
+                </option>
+
+                <option value="folga">
+                    Folga caçada
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                Data
+            </label>
+
+            <input
+                id="recordDate"
+                type="date"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                Horas extras
+            </label>
+
+            <input
+                id="recordHours"
+                type="number"
+                min="0"
+                step="0.5"
+                value="1"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                Observação
+            </label>
+
+            <input
+                id="recordNote"
+                type="text"
+                maxlength="100"
+                placeholder="Opcional"
+            >
+
+        </div>
+
+
+        <button
+            id="saveRecord"
+            class="primary wide"
+        >
+            Salvar registro
+        </button>
+
+    </div>
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
